@@ -51,8 +51,18 @@ def download_file(session_id, filename):
     if session_id not in sessions or filename not in sessions[session_id]["files"]:
         return jsonify({"error": "File not found"}), 404
 
+    # Retrieve the file data
     file_data = sessions[session_id]["files"][filename]
+
+    # Remove the file from the session data
+    del sessions[session_id]["files"][filename]
+
+    # If there are no more files, clear the session completely
+    if not sessions[session_id]["files"]:
+        del sessions[session_id]
+
     return send_file(BytesIO(file_data), download_name=filename, as_attachment=True)
+
 
 
 # Serve the frontend for /ui route
