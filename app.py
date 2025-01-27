@@ -18,7 +18,7 @@ def generate_url():
     """
     session_id = str(uuid.uuid4())
     sessions[session_id] = {}
-    return jsonify({"url": f"https://your-backend-url.com/download/{session_id}"})
+    return jsonify({"url": f"https://p2pfiletransfer-r7ge.onrender.com/download/{session_id}"})
 
 
 @socketio.on("offer")
