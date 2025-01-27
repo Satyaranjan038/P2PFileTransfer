@@ -18,7 +18,8 @@ sessions = {}
 def create_session():
     session_id = str(uuid.uuid4())
     sessions[session_id] = {"files": {}}
-    return jsonify({"session_id": session_id, "url": f"http://localhost:5000/{session_id}"})
+    session_url = f"http://{request.host}/{session_id}"
+    return jsonify({"session_id": session_id, "url": session_url})
 
 
 # Endpoint to upload files
@@ -87,3 +88,4 @@ def handle_signal(data):
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
+

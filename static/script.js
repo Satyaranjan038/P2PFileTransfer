@@ -1,4 +1,4 @@
-const serverUrl = "http://localhost:5000";
+const serverUrl = "https://p2pfiletransfer-r7ge.onrender.com";
 const socket = io(serverUrl);
 
 let sessionId = null;
