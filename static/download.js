@@ -1,11 +1,11 @@
-const socket = io("http://localhost:5000");
+const socket = io("https://p2pfiletransfer-r7ge.onrender.com");
 
 let selectedFiles = [];
 
 // Fetch the list of available files
 async function fetchFiles() {
     const sessionId = window.location.pathname.split("/")[1];
-    const response = await fetch(`http://localhost:5000/files/${sessionId}`);
+    const response = await fetch(`https://p2pfiletransfer-r7ge.onrender.com/files/${sessionId}`);
     const data = await response.json();
     if (data.files) {
         const fileList = document.getElementById("fileList");
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (selectedFiles.length > 0) {
                 selectedFiles.forEach((filename) => {
-                    fetch(`http://localhost:5000/download/${sessionId}/${filename}`)
+                    fetch(`https://p2pfiletransfer-r7ge.onrender.com/download/${sessionId}/${filename}`)
                         .then((response) => response.blob())
                         .then((blob) => {
                             const url = URL.createObjectURL(blob);
