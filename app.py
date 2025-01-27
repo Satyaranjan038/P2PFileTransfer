@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 import uuid
@@ -17,35 +17,48 @@ def generate_url():
     Generates a unique URL for initiating a session.
     """
     session_id = str(uuid.uuid4())
-    sessions[session_id] = {}
-    return jsonify({"url": f"https://p2pfiletransfer-r7ge.onrender.com/download/{session_id}"})
+    sessions[session_id] = {"file_data": None, "filename": None}
+    return jsonify({"url": f"http://{request.host}/download/{session_id}"})
 
 
-@socketio.on("offer")
-def handle_offer(data):
+@app.route("/upload/<session_id>", methods=["POST"])
+def upload_file(session_id):
     """
-    Handles WebRTC offer from a sender and broadcasts it to the receiver.
+    Handles the file upload and stores it in memory for the session.
     """
-    session_id = data.get("session_id")
-    if session_id in sessions:
-        sessions[session_id]["offer"] = data["offer"]
-        emit("offer", data, broadcast=True)
+    if session_id not in sessions:
+        return jsonify({"error": "Invalid session ID"}), 404
+
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files["file"]
+    sessions[session_id]["file_data"] = file.read()
+    sessions[session_id]["filename"] = file.filename
+
+    return jsonify({"message": "File uploaded successfully"})
 
 
-@socketio.on("answer")
-def handle_answer(data):
+@app.route("/download/<session_id>", methods=["GET"])
+def download_file(session_id):
     """
-    Handles WebRTC answer from a receiver and broadcasts it to the sender.
+    Handles the file download request for a specific session.
     """
-    emit("answer", data, broadcast=True)
+    session_data = sessions.get(session_id)
+    if not session_data or not session_data.get("file_data"):
+        return jsonify({"error": "Session not found or no file uploaded"}), 404
 
+    file_data = session_data["file_data"]
+    filename = session_data["filename"]
 
-@socketio.on("candidate")
-def handle_candidate(data):
-    """
-    Handles ICE candidates and broadcasts them to peers.
-    """
-    emit("candidate", data, broadcast=True)
+    # Stream the file to the client
+    return Response(
+        file_data,
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Content-Type": "application/octet-stream",
+        },
+    )
 
 
 if __name__ == "__main__":
