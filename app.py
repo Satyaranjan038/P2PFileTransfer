@@ -49,4 +49,8 @@ def handle_candidate(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    import eventlet
+    import eventlet.wsgi
+
+    # Run the app using Eventlet WSGI server
+    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", 5000)), app)
