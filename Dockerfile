@@ -1,19 +1,24 @@
-# Dockerfile
+# Use the official Python image with the desired version
+FROM python:3.10-slim
 
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy the requirements file to the working directory
+COPY requirements.txt /app/
 
-# Install any needed packages specified in requirements.txt
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 5000 available to the world outside this container
+# Copy the application code to the container
+COPY . /app/
+
+# Expose the port your app runs on
 EXPOSE 5000
 
-# Run the app using Gunicorn (replace app with your actual app file name if different)
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+# Set the command to run the app
+CMD ["python", "app.py"]
