@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P File Transfer</title>
+  <link rel="stylesheet" href="static/styles.css">
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js" defer></script>
+  <script src="static/script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>P2P File Transfer</h1>
+    </header>
+
+    <main>
+      <section id="createSessionSection">
+        <h2>Step 1: Create a Session</h2>
+        <button id="createSessionButton">Create Session</button>
+        <p id="sessionUrl"></p>
+      </section>
+
+      <section id="uploadSection" style="display: none;">
+        <h2>Step 2: Upload Files</h2>
+        <input type="file" id="fileInput" multiple>
+        <button id="uploadButton">Upload Files</button>
+        <p id="uploadStatus"></p>
+      </section>
+
+      <section id="downloadSection" style="display: none;">
+        <h2>Step 3: Download Files</h2>
+        <ul id="fileList"></ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 P2P File Transfer</p>
+    </footer>
+  </div>
+</body>
+</html>

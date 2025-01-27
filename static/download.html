@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P File Transfer</title>
+    <link rel="stylesheet" href="static/download.css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>P2P File Transfer</h1>
+        </header>
+
+        <section id="downloadSection">
+            <h2>Step 3: Download Files</h2>
+            <div class="file-selection">
+                <input type="checkbox" id="selectAll" /> <label for="selectAll">Select All</label>
+                <ul id="fileList"></ul>
+            </div>
+            <button id="downloadButton" class="btn">Download Selected Files</button>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 P2P File Transfer</p>
+        </footer>
+    </div>
+
+    <script src="static/download.js" defer></script>
+</body>
+</html>
